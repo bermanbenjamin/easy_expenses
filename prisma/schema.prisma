@@ -1,0 +1,55 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String           @id @default(uuid())
+  email           String           @unique
+  name            String
+  password        String
+  created_at      DateTime         @default(now())
+  updated_at      DateTime         @updatedAt
+  balance         Decimal          @default(0)
+  expenses_box    ExpenseBox[]
+  balance_history BalanceHistory[]
+}
+
+model Transaction {
+  id             String      @id @default(uuid())
+  amount         Decimal
+  isFuture       Boolean     @default(false)
+  created_at     DateTime    @default(now())
+  updated_at     DateTime    @updatedAt
+  expense_Box    ExpenseBox? @relation(fields: [saving_bank_id], references: [id])
+  saving_bank_id String?
+}
+
+model ExpenseBox {
+  user         User?         @relation(fields: [userId], references: [id])
+  userId       String?
+  id           String        @id @default(uuid())
+  created_at   DateTime      @default(now())
+  transactions Transaction[]
+  updated_at   DateTime      @updatedAt
+  name         String
+  description  String
+  balance      Int           @default(0)
+  isActive     Boolean       @default(true)
+  endDate      DateTime
+}
+
+model BalanceHistory {
+  user   User?    @relation(fields: [userId], references: [id])
+  userId String?
+  id     String   @id @default(uuid())
+  date   DateTime @default(now())
+  amount Decimal
+}
