@@ -17,4 +17,8 @@ export class UpdateUserDTO {
   @IsOptional()
   @IsDecimal()
   balance: number;
+
+  @IsOptional()
+  @IsDecimal()
+  total_compensation: number;
 }

@@ -1,4 +1,11 @@
-import { IsEmail, IsNotEmpty, IsString, Max, Min } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+  Max,
+  Min,
+} from 'class-validator';
 
 export class CreateUserDTO {
   @IsNotEmpty()
@@ -16,4 +23,8 @@ export class CreateUserDTO {
   @Max(16)
   @Min(3)
   name: string;
+
+  @IsNotEmpty()
+  @IsNumber()
+  total_compensation: number;
 }

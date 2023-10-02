@@ -13,6 +13,7 @@ export class UserService {
         email: data.email,
         password: data.password,
         name: data.name,
+        total_compensation: data.total_compensation,
       },
     });
   }
@@ -35,6 +36,7 @@ export class UserService {
         email: data.email,
         balance: data.balance,
         password: data.password,
+        total_compensation: data.total_compensation,
       },
     });
   }
