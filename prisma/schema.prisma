@@ -11,45 +11,53 @@ datasource db {
 }
 
 model User {
-  id              String           @id @default(uuid())
-  email           String           @unique
-  name            String
-  password        String
-  created_at      DateTime         @default(now())
-  updated_at      DateTime         @updatedAt
-  balance         Decimal          @default(0)
-  expenses_box    ExpenseBox[]
-  balance_history BalanceHistory[]
+  id                 String           @id @default(uuid())
+  email              String           @unique
+  name               String
+  password           String
+  created_at         DateTime         @default(now())
+  updated_at         DateTime         @updatedAt
+  balance            Decimal          @default(0)
+  total_compensation Decimal
+  expenses_box       ExpenseBox[]
+  balance_history    BalanceHistory[]
+  transactions       Transaction[]
 }
 
 model Transaction {
-  id             String      @id @default(uuid())
-  amount         Decimal
-  isFuture       Boolean     @default(false)
-  created_at     DateTime    @default(now())
-  updated_at     DateTime    @updatedAt
-  expense_Box    ExpenseBox? @relation(fields: [saving_bank_id], references: [id])
-  saving_bank_id String?
+  id               String          @id @default(uuid())
+  amount           Decimal
+  isFuture         Boolean         @default(false)
+  created_at       DateTime        @default(now())
+  updated_at       DateTime        @updatedAt
+  expense_Box      ExpenseBox?     @relation(fields: [saving_bank_id], references: [id])
+  saving_bank_id   String?
+  user             User?           @relation(fields: [userId], references: [id])
+  userId           String?
+  balanceHistory   BalanceHistory? @relation(fields: [balanceHistoryId], references: [id])
+  balanceHistoryId String?
 }
 
 model ExpenseBox {
-  user         User?         @relation(fields: [userId], references: [id])
-  userId       String?
-  id           String        @id @default(uuid())
-  created_at   DateTime      @default(now())
-  transactions Transaction[]
-  updated_at   DateTime      @updatedAt
-  name         String
-  description  String
-  balance      Int           @default(0)
-  isActive     Boolean       @default(true)
-  endDate      DateTime
+  user              User?         @relation(fields: [userId], references: [id])
+  userId            String?
+  id                String        @id @default(uuid())
+  created_at        DateTime      @default(now())
+  transactions      Transaction[]
+  updated_at        DateTime      @updatedAt
+  name              String
+  description       String
+  balance           Int           @default(0)
+  isActive          Boolean       @default(true)
+  endDate           DateTime
+  estimated_expense Decimal
 }
 
 model BalanceHistory {
-  user   User?    @relation(fields: [userId], references: [id])
-  userId String?
-  id     String   @id @default(uuid())
-  date   DateTime @default(now())
-  amount Decimal
+  user         User?         @relation(fields: [userId], references: [id])
+  userId       String?
+  id           String        @id @default(uuid())
+  date         DateTime      @default(now())
+  amount       Decimal
+  transactions Transaction[]
 }
