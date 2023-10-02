@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../database/prisma.service';
 
 @Injectable()
-export class SavingBankService {
+export class ExpenseBoxService {
   constructor(private prisma: PrismaService) {}
 
   async createSavingBank(data: any, user_id: string) {
@@ -16,6 +16,7 @@ export class SavingBankService {
         name: data.name,
         description: data.description,
         endDate: data.endDate,
+        estimated_expense: data.estimated_expense,
       },
     });
   }
@@ -53,6 +54,17 @@ export class SavingBankService {
         name: data.name,
         description: data.description,
         endDate: data.endDate,
+      },
+    });
+  }
+
+  async deleteSavingBank(id: string, user_id: string) {
+    return await this.prisma.expenseBox.delete({
+      where: {
+        id: id,
+        user: {
+          id: user_id,
+        },
       },
     });
   }
